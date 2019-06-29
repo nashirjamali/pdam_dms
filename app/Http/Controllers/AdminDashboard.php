@@ -40,7 +40,7 @@ class AdminDashboard extends Controller
 
         return view('admin.dashboard', [
             'countPelanggan' => $countPelanggan,
-            'monthNow' => $monthNow, 'x' => $x, 
+            'monthNow' => $monthNow, 'x' => $x,
             'countKelurahan' => $countKelurahan,
             'countKaryawan' => $countKaryawan
         ]);
@@ -110,5 +110,20 @@ class AdminDashboard extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function persebaranPelanggan()
+    {
+        $kecamatans = DB::table('kecamatans')->get();
+        $countPelanggan = array();
+
+        foreach ($kecamatans as $key) {
+            $x = DB::table('pelanggans')->where('id_kecamatan', '=', $key->id_kecamatan)->count();
+            array_push($countPelanggan, $x);
+        }
+        
+        $countPelanggan = collect($countPelanggan);
+
+        return response()->json(['kecamatans' => $kecamatans, 'countPelanggan' => $countPelanggan]);
     }
 }

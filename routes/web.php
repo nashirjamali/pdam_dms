@@ -19,6 +19,7 @@ Route::group(['middleware'    => 'auth'], function () {
             return redirect('/admin/dashboard');
         });
         Route::prefix('/admin')->name('admin.')->group(function () {
+            Route::get('persebaranPelanggan', 'AdminDashboard@persebaranPelanggan');
             Route::resource('dashboard', 'AdminDashboard');
             Route::resource('wilayah', 'WilayahController');
             Route::resource('karyawan', 'KaryawanController');

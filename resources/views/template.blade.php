@@ -121,10 +121,14 @@
     <script src="{{asset('assets/vendor/charts/c3charts/d3-5.4.0.min.js')}}"></script>
     <script src="{{asset('assets/vendor/charts/c3charts/C3chartjs.js')}}"></script>
 
-    <!-- Datepricker -->
+    <!-- Datepicker -->
     <script src="{{asset('assets/vendor/datepicker/moment.js')}}"></script>
     <script src="{{asset('assets/vendor/datepicker/tempusdominus-bootstrap-4.js')}}"></script>
     <script src="{{asset('assets/vendor/datepicker/datepicker.js')}}"></script>
+
+    <!-- ChartJS -->
+    <script src="{{asset('assets/vendor/charts/charts-bundle/Chart.bundle.js')}}"></script>
+    <script src="{{asset('assets/vendor/charts/charts-bundle/chartjs.js')}}"></script>
 
     <script>
         $(document).ready(function() {
