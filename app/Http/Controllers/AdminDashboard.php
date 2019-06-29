@@ -124,6 +124,8 @@ class AdminDashboard extends Controller
         
         $countPelanggan = collect($countPelanggan);
 
+        // dd($kecamatans);
+
         return response()->json(['kecamatans' => $kecamatans, 'countPelanggan' => $countPelanggan]);
     }
 }

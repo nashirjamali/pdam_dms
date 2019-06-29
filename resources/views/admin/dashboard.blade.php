@@ -102,7 +102,7 @@
     <!-- ============================================================== -->
     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
         <div class="card">
-            <h5 class="card-header">Pie Charts</h5>
+            <h5 class="card-header">Persebaran Pelanggan</h5>
             <div class="card-body">
                 <canvas id="chartPelanggan"></canvas>
             </div>
@@ -117,41 +117,31 @@
 @push('custom-script')
 <script>
     var url = "{{ url('admin/persebaranPelanggan') }}"
-    var kecamatans = new Array()
-    var jmlhPelanggan = new Array()
-    var arrayan = [7, 6, 3, 232, 324, 565, 12, 34, 454, 231, 2342, 22, 43]
+    var kecamatans = []
 
     var charts = document.getElementById('chartPelanggan')
 
     $(document).ready(function() {
         $.get(url, function(response) {
 
-            console.log(response)
-
             response['kecamatans'].forEach(function(data) {
                 kecamatans.push(data.nama_kecamatan)
             })
 
-            response['countPelanggan'].forEach(function(data) {
-                jmlhPelanggan.push(data)
+            jmlhPelanggan = response['countPelanggan']
+
+            var pieChart = new Chart(charts, {
+                type: 'pie',
+                data: {
+                    labels: kecamatans,
+                    datasets: [{
+                        label: response['kecamatans'],
+                        data: response['countPelanggan'],
+                        backgroundColor: ['#3c40c6', '#ffdd59', '#00d8d6', '#d2dae2', '#f53b57', '#485460', '#0be881', '#ffa801', '#00d8d6', '#ff3f34', '#ffc048', '#0be881', '#ef5777']
+                    }],
+                }
             })
 
-        })
-
-        console.log(jmlhPelanggan)
-        var data = {
-            labels: kecamatans,
-            datasets: [{
-                label: kecamatans,
-                data: jmlhPelanggan,
-                backgroundColor: ['#3c40c6', '#ffdd59', '#00d8d6', '#d2dae2', '#f53b57', '#485460', '#0be881', '#ffa801', '#00d8d6', '#ff3f34', '#ffc048', '#0be881', '#ef5777']
-            }],
-            
-        }
-
-        var pieChart = new Chart(charts, {
-            type: 'pie',
-            data: data
         })
 
     })
