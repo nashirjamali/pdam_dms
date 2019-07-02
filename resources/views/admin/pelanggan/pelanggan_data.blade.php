@@ -46,6 +46,7 @@
                                 <th>Alamat</th>
                                 <th>Kelurahan</th>
                                 <th>Kecamatan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,6 +57,9 @@
                                 <td>{{ $key->alamat }}</td>
                                 <td>{{ $key->nama_kelurahan }}</td>
                                 <td>{{ $key->nama_kecamatan }}</td>
+                                <td>
+                                    <a href="pelanggan/{{ $key->id }}" class="btn btn-info btn-sm">Detail</a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -110,7 +110,7 @@
                     <table id="table" class="table data-table table-striped table-bordered first">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
+                                <th>Bulan</th>
                                 <th>No Meter</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
@@ -120,7 +120,7 @@
                         <tbody>
                             @foreach(session()->get('catat_meters') as $key)
                             <tr>
-                                <td>{{ $key->tanggal }}</td>
+                                <td>{{ $key->bulan }}</td>
                                 <td>{{ $key->no_meter }}</td>
                                 <td>{{ $key->nama }}</td>
                                 <td>{{ $key->alamat }}</td>
@@ -135,28 +135,23 @@
                     <table id="table" class="table data-table table-striped table-bordered first">
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
-                                <th>No Meter</th>
+                                <th>No Pelanggan</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
-                                <th>Angka</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($catat_meters as $key)
+                            @foreach($pelanggans as $key)
                             <tr>
-                                <td>{{ $key->tanggal }}</td>
                                 <td>{{ $key->no_meter }}</td>
                                 <td>{{ $key->nama }}</td>
                                 <td>{{ $key->alamat }}</td>
-                                <td>{{ $key->angka_meter }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
                 @endif
-
             </div>
         </div>
     </div>
@@ -239,10 +234,10 @@
                         <label for="">Pilih Kondisi</label>
                         <br>
                         <label class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" name="kondisi" checked="" class="custom-control-input"><span class="custom-control-label">Sudah</span>
+                            <input type="radio" name="kondisi" value="1" checked="" class="custom-control-input"><span class="custom-control-label">Sudah</span>
                         </label>
                         <label class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" name="kondisi" class="custom-control-input"><span class="custom-control-label">Belum</span>
+                            <input type="radio" name="kondisi" value="0" class="custom-control-input"><span class="custom-control-label">Belum</span>
                         </label>
                     </div>
                     <div class="modal-footer">

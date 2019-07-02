@@ -24,6 +24,7 @@ Route::group(['middleware'    => 'auth'], function () {
             Route::resource('wilayah', 'WilayahController');
             Route::resource('karyawan', 'KaryawanController');
             Route::resource('pelanggan', 'PelangganController');
+            Route::get('/pelanggan/grafikAngkaMeter/{id}', 'PelangganController@grafikAngkaMeter');
             Route::post('wilayah/filter', 'WilayahController@filter')->name('wilayah.filter');
             Route::post('wilayah/kelurahanCek', 'KaryawanController@kelurahanCek');
             Route::get('karyawan/create-admin', 'KaryawanController@createAdmin');

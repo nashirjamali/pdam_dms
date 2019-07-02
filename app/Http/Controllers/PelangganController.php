@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PelangganController extends Controller
 {
@@ -64,7 +65,33 @@ class PelangganController extends Controller
      */
     public function show($id)
     {
-        //
+        $pelanggan = DB::table('pelanggans')
+            ->where('id', '=', $id)
+            ->join('kelurahans', 'kelurahans.id_kelurahan', '=', 'pelanggans.id_kelurahan')
+            ->join('kecamatans', 'kecamatans.id_kecamatan', '=', 'pelanggans.id_kecamatan')
+            ->first();
+
+        $thisYear = Carbon::now()->year;
+
+        $belumAudit = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        $catatMeters = DB::table('catat_meters')
+            ->join('pelanggans', 'pelanggans.no_meter', '=', 'catat_meters.no_meter')
+            ->whereYear('tanggal', '=', $thisYear)
+            ->where('pelanggans.id', $id)
+            ->select(
+                DB::raw('MONTHNAME(tanggal) as bulan')
+            )
+            ->get();
+
+        foreach ($catatMeters as $key) {
+            if (in_array($key->bulan, $belumAudit)) {
+                $idArr = array_search($key->bulan, $belumAudit);
+                unset($belumAudit[$idArr]);
+            }
+        }
+
+        return response()->view('admin.pelanggan.pelanggan_detail', ['pelanggan' => $pelanggan, 'thisYear' => $thisYear, 'belumAudit' => collect($belumAudit)]);
     }
 
     /**
@@ -99,5 +126,20 @@ class PelangganController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function grafikAngkaMeter($id)
+    {
+        $thisYear = Carbon::now()->year;
+        $noMeter = DB::table('pelanggans')->where('id', '=', $id)->first()->no_meter;
+        $angkaMeter = DB::table('catat_meters')
+            ->where('no_meter', '=', $noMeter)
+            ->whereYear('tanggal', '=', $thisYear)
+            ->select(
+                DB::raw('MONTHNAME(tanggal) as bulan'),
+                'angka_meter'
+            )
+            ->get();
+        return response()->json($angkaMeter);
     }
 }

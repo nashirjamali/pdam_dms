@@ -83,6 +83,10 @@ class WilayahController extends Controller
             ->where('id_kelurahan', $id)
             ->count();
 
+        $pelanggans = DB::table('pelanggans')
+            ->where('id_kelurahan', $id)
+            ->get();
+
         $catat_meters = DB::table('catat_meters')
             ->join('pelanggans', 'pelanggans.no_meter', '=', 'catat_meters.no_meter')
             ->where('id_kelurahan', $id)
@@ -95,7 +99,7 @@ class WilayahController extends Controller
             'x' => $x,
             'monthNow' => $monthNow,
             'id_kelurahan' => $id,
-            'catat_meters' => $catat_meters
+            'pelanggans' => $pelanggans
         ]);
     }
 
@@ -140,16 +144,34 @@ class WilayahController extends Controller
         $bulan_2 = $request->get('bulan_2');
         $tahun_1 = $request->get('tahun_1');
         $tahun_2 = $request->get('tahun_2');
+        $kondisi = $request->get('kondisi');
 
-        $catat_meters = DB::table('catat_meters')
-            ->whereYear('tanggal', '>=', $tahun_1)
-            ->whereYear('tanggal', '<=', $tahun_2)
-            ->whereMonth('tanggal', '>=', $bulan_1)
-            ->whereMonth('tanggal', '<=', $bulan_2)
-            ->join('pelanggans', 'pelanggans.no_meter', '=', 'catat_meters.no_meter')
-            ->where('id_kelurahan', $id_kelurahan)
-            ->get();
+        if ($kondisi == '1') {
+            $catat_meters = DB::table('catat_meters')
+                ->whereYear('tanggal', '>=', $tahun_1)
+                ->whereYear('tanggal', '<=', $tahun_2)
+                ->whereMonth('tanggal', '>=', $bulan_1)
+                ->whereMonth('tanggal', '<=', $bulan_2)
+                ->join('pelanggans', 'pelanggans.no_meter', '=', 'catat_meters.no_meter')
+                ->where('id_kelurahan', $id_kelurahan)
+                ->select(
+                    DB::raw('MONTHNAME(tanggal) as bulan'),
+                    'catat_meters.no_meter as no_meter',
+                    'catat_meters.nama as nama',
+                    'alamat',
+                    'angka_meter'
+                )
+                ->get();
 
-        return redirect('admin/wilayah/' . $id_kelurahan)->with(['catat_meters' => $catat_meters]);
+            return redirect('admin/wilayah/' . $id_kelurahan)->with(['catat_meters' => $catat_meters]);
+        } else {
+            $pelanggans = DB::table('pelanggans')->where('id_kelurahan', $id_kelurahan)->get();
+            
+            $belumAudit = [];
+
+            for ($i=$tahun_1; $i < $tahun_2; $i++) { 
+                
+            }
+        }
     }
 }
