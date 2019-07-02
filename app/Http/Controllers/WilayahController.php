@@ -164,14 +164,77 @@ class WilayahController extends Controller
                 ->get();
 
             return redirect('admin/wilayah/' . $id_kelurahan)->with(['catat_meters' => $catat_meters]);
+
         } else {
             $pelanggans = DB::table('pelanggans')->where('id_kelurahan', $id_kelurahan)->get();
-            
+
             $belumAudit = [];
 
-            for ($i=$tahun_1; $i < $tahun_2; $i++) { 
-                
+            for ($i = $tahun_1; $i <= $tahun_2; $i++) {
+                for ($j = 1; $j <= 12; $j++) {
+
+                    foreach ($pelanggans as $key) {
+                        if (DB::table('catat_meters')->whereYear('tanggal', $i)->whereMonth('tanggal', $j)->where('no_meter', $key->no_meter)->first() == null) {
+                            $bulan = null;
+                            switch ($j) {
+                                case 1:
+                                    $bulan = "Januari";
+                                    break;
+                                case 2:
+                                    $bulan = "Februari";
+                                    break;
+                                case 3:
+                                    $bulan = "Maret";
+                                    break;
+                                case 4:
+                                    $bulan = "April";
+                                    break;
+                                case 5:
+                                    $bulan = "Mei";
+                                    break;
+                                case 6:
+                                    $bulan = "Juni";
+                                    break;
+                                case 7:
+                                    $bulan = "Juli";
+                                    break;
+                                case 8:
+                                    $bulan = "Agustus";
+                                    break;
+                                case 9:
+                                    $bulan = "September";
+                                    break;
+                                case 10:
+                                    $bulan = "Oktober";
+                                    break;
+                                case 11:
+                                    $bulan = "November";
+                                    break;
+                                case 12:
+                                    $bulan = "Desember";
+                                    break;
+                                default:
+                                    $bulan = null;
+                                    break;
+                            }
+
+                            array_push($belumAudit, [
+                                'bulan' => $bulan . ' ' . $i,
+                                'no_meter' => $key->no_meter,
+                                'nama' => $key->nama,
+                                'alamat' => $key->alamat,
+                                'angka_meter' => "Belum di audit"
+                            ]);
+                        }
+                    }
+                }
             }
+
+            $collection = collect($belumAudit)->map(function ($row) {
+                return (object) $row;
+            });
+
+            return redirect('admin/wilayah/' . $id_kelurahan)->with(['catat_meters' => $collection]);
         }
     }
 }

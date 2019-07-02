@@ -61,6 +61,10 @@
     var charts = document.getElementById('lineAngkaMeter')
 
     $(document).ready(function() {
+        $('#btn').click(function () {
+            alert('diklik')
+        })
+
         $.get(url, function(res) {
             res.forEach(function(data) {
                 bulan.push(data.bulan)
