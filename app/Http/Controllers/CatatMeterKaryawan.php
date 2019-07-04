@@ -89,7 +89,9 @@ class CatatMeterKaryawan extends Controller
                 'updated_at' => Carbon::now()
             ]);
 
-            return redirect('karyawan/catat-meter')->with('msg', 'Data berhasil di upload');
+            return redirect('karyawan');
+
+            // return redirect('karyawan/catat-meter')->with('msg', 'Data berhasil di upload');
         }
     }
 

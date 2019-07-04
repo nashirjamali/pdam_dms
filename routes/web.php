@@ -36,11 +36,13 @@ Route::group(['middleware'    => 'auth'], function () {
     });
 
     Route::get('/karyawan', function () {
-        return redirect('/karyawan/dashboard');
+        return redirect('/karyawan/catat-meter/create');
     });
     Route::prefix('/karyawan')->name('karyawan.')->group(function () {
-        Route::resource('dashboard', 'KaryawanDashboard');
         Route::resource('catat-meter', 'CatatMeterKaryawan');
+        Route::resource('pelanggan', 'PelangganKaryawanController');
+        Route::resource('setting', 'SettingKaryawanController');
+        Route::get('/pelanggan/grafikAngkaMeter/{id}', 'PelangganKaryawanController@grafikAngkaMeter');
     });
 });
 
