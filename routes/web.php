@@ -19,6 +19,7 @@ Route::group(['middleware'    => 'auth'], function () {
             return redirect('/admin/dashboard');
         });
         Route::prefix('/admin')->name('admin.')->group(function () {
+            Route::get('karyawan/create-admin', 'KaryawanController@createAdmin')->name('karyawan.create-admin');
             Route::get('persebaranPelanggan', 'AdminDashboard@persebaranPelanggan');
             Route::resource('dashboard', 'AdminDashboard');
             Route::resource('wilayah', 'WilayahController');
@@ -27,7 +28,6 @@ Route::group(['middleware'    => 'auth'], function () {
             Route::get('/pelanggan/grafikAngkaMeter/{id}', 'PelangganController@grafikAngkaMeter');
             Route::post('wilayah/filter', 'WilayahController@filter')->name('wilayah.filter');
             Route::post('wilayah/kelurahanCek', 'KaryawanController@kelurahanCek');
-            Route::get('karyawan/create-admin', 'KaryawanController@createAdmin');
         });
     });
 

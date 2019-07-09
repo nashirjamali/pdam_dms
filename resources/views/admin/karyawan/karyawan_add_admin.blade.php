@@ -6,11 +6,12 @@
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
-            <h2 class="pageheader-title">Karyawan</h2>
+            <h2 class="pageheader-title">Admin</h2>
             <div class="page-breadcrumb">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" aria-current="page">Karyawan</li>
+                        <li class="breadcrumb-item" aria-current="page"><a href="/admin/karyawan">Karyawan</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Admin</li>
                     </ol>
                 </nav>
             </div>
@@ -33,36 +34,11 @@
                 <form action="{{ route('admin.karyawan.store') }}" method="post">
                     {{ csrf_field() }}
 
-                    <input type="hidden" value="user" name="role">
+                    <input type="hidden" value="admin" name="role">
                     <!-- Nama -->
                     <div class="form-group">
-                        <label for="">Nama Karyawan</label>
+                        <label for="">Nama</label>
                         <input name="name" required type="text" class="form-control">
-                    </div>
-
-                    <div class="row">
-
-                        <!-- Kecamatan -->
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label for="">Kecamatan</label>
-                                <br>
-                                <select required class="form-control" name="kecamatan" id="selectKecamatan">
-                                    @foreach($kecamatans as $key)
-                                    <option value="{{ $key->id_kecamatan }}">{{ $key->nama_kecamatan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Kelurahan -->
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label for="">Kelurahan</label><br>
-                                <select required class="form-control" name="kelurahan" id="selectKelurahan"> </select>
-                            </div>
-                        </div>
-
                     </div>
 
                     <!-- Alamat -->
@@ -87,9 +63,9 @@
         </div>
 
         <div class="alert alert-warning" role="alert">
-            <b>Password default adalah : </b> Karyawan[Kode Karyawan]
+            <b>Password default adalah : </b> Admin[Kode Admin]
             <br>
-            Contoh : <i>KaryawanKAR1</i>
+            Contoh : <i>AdminADM1</i>
         </div>
 
     </div>
@@ -102,40 +78,5 @@
 
 @push('custom-script')
 <script>
-    $(document).ready(function() {
-        $('#selectKecamatan').change(function() {
-
-            var kecamatanId = $(this).val()
-            var _token = $('input[name="_token"]').val();
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            })
-
-            $.ajax({
-                url: "{{ url('admin/wilayah/kelurahanCek') }}",
-                method: "POST",
-                data: {
-                    kecamatanId: kecamatanId,
-                    _token: _token
-                },
-                success: data => {
-                    var kelurahans = JSON.parse(data)
-                    var option = ''
-                    kelurahans.forEach(e => {
-                        option += "<option value=" + e.id_kelurahan + " >" + e.nama_kelurahan + "</option>"
-                    });
-
-                    $('#selectKelurahan').html(option)
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                }
-            })
-
-        })
-    })
 </script>
 @endpush

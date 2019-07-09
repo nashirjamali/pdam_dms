@@ -43,7 +43,7 @@ class KaryawanController extends Controller
 
     public function createAdmin()
     {
-        dd('askndkans');
+        return view('admin.karyawan.karyawan_add_admin');
     }
 
     /**
@@ -79,8 +79,24 @@ class KaryawanController extends Controller
                 'password' => bcrypt('Karyawan' . $kodeKaryawan)
             ]);
         } elseif ($role == 'admin') {
+            $id_kelurahan = 1;
+            $id_kecamatan = 1;
             $lastId = DB::table('karyawans')->where('kode_karyawan', 'LIKE', 'ADM%')->count() + 1;
             $kodeKaryawan = 'ADM' . $lastId;
+            DB::table('karyawans')->insert([
+                'kode_karyawan' => $kodeKaryawan,
+                'nama_karyawan' => $nama,
+                'id_kelurahan' => $id_kelurahan,
+                'id_kecamatan' => $id_kecamatan,
+                'alamat' => $alamat,
+                'telepon' => $telepon
+            ]);
+
+            DB::table('users')->insert([
+                'kode_karyawan' => $kodeKaryawan,
+                'role' => 'admin',
+                'password' => bcrypt('Admin' . $kodeKaryawan)
+            ]);
         }
 
         return redirect('/admin/karyawan');
