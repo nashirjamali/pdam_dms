@@ -84,6 +84,11 @@ class PelangganController extends Controller
             )
             ->get();
 
+
+        $sudahAudit = DB::table('catat_meters')
+            ->where('no_meter', $pelanggan->no_meter)
+            ->get();
+
         foreach ($catatMeters as $key) {
             if (in_array($key->bulan, $belumAudit)) {
                 $idArr = array_search($key->bulan, $belumAudit);
@@ -91,7 +96,7 @@ class PelangganController extends Controller
             }
         }
 
-        return response()->view('admin.pelanggan.pelanggan_detail', ['pelanggan' => $pelanggan, 'thisYear' => $thisYear, 'belumAudit' => collect($belumAudit)]);
+        return response()->view('admin.pelanggan.pelanggan_detail', ['pelanggan' => $pelanggan, 'thisYear' => $thisYear, 'sudahAudit' => $sudahAudit, 'belumAudit' => collect($belumAudit)]);
     }
 
     /**
