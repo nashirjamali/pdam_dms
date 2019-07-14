@@ -107,7 +107,10 @@ class PelangganController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pelanggan = DB::table('pelanggans')->where('id', $id)->first();
+        $kecamatans = DB::table('kecamatans')->get();
+        $kelurahans = DB::table('kelurahans')->get();
+        return view('admin.pelanggan.pelanggan_edit', ['pelanggan' => $pelanggan, 'kecamatans' => $kecamatans, 'kelurahans' => $kelurahans]);
     }
 
     /**
@@ -119,7 +122,19 @@ class PelangganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nama = $request->get('name');
+        $alamat = $request->get('alamat');
+        $idKecamatan = $request->get('kecamatan');
+        $idKelurahan = $request->get('kelurahan');
+
+        DB::table('pelanggans')->where('id', $id)->update([
+            'nama' => $nama,
+            'alamat' => $alamat,
+            'id_kecamatan' => $idKecamatan,
+            'id_kelurahan' => $idKelurahan
+        ]);
+
+        return redirect('admin/pelanggan')->with('msg', 'Data Berhasil Disimpan');
     }
 
     /**
@@ -130,7 +145,9 @@ class PelangganController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('pelanggans')->delete($id);
+
+        return redirect('admin/pelanggan')->with('msg', 'Data Berhasil Dihapus');
     }
 
     public function grafikAngkaMeter($id)

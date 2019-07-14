@@ -24,7 +24,7 @@
     <!-- ============================================================== -->
     <!-- Tabel Karyawan -->
     <!-- ============================================================== -->
-    <div class="offset-xl-2 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
         @if(session()->has('msg'))
         <div class="alert alert-success" role="alert">
@@ -41,7 +41,7 @@
                     <table class="data-tables table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">No Meter</th>
+                                <th>No Meter</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Kelurahan</th>
@@ -58,7 +58,15 @@
                                 <td>{{ $key->nama_kelurahan }}</td>
                                 <td>{{ $key->nama_kecamatan }}</td>
                                 <td>
-                                    <a href="pelanggan/{{ $key->id }}" class="btn btn-info btn-sm">Detail</a>
+                                    <div class="d-flex">
+                                        <a href="pelanggan/{{ $key->id }}" class="btn btn-info btn-sm mr-2">Detail</a>
+                                        <a href="{{ route('admin.pelanggan.edit', $key->id) }}" class="btn btn-warning mr-2"><i class="fa fa-edit"></i></a>
+                                        <form action="{{ route('admin.pelanggan.destroy',[$key->id]) }}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
