@@ -121,7 +121,22 @@ class KaryawanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = DB::table('karyawans')->where('karyawans.kode_karyawan', $id)
+            ->join('users', 'users.kode_karyawan', '=', 'karyawans.kode_karyawan')
+            ->select(
+                'karyawans.kode_karyawan',
+                'karyawans.nama_karyawan',
+                'karyawans.alamat',
+                'karyawans.telepon',
+                'karyawans.id_kecamatan',
+                'karyawans.id_kelurahan',
+                'users.role'
+            )
+            ->first();
+
+        $kecamatans = DB::table('kecamatans')->get();
+        $kelurahans = DB::table('kelurahans')->get();
+        return view('admin.karyawan.karyawan_edit_user', ['user' => $user, 'kecamatans' => $kecamatans, 'kelurahans' => $kelurahans]);
     }
 
     /**
@@ -133,7 +148,21 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nama = $request->get('name');
+        $id_kelurahan = $request->get('kelurahan');
+        $id_kecamatan = $request->get('kecamatan');
+        $alamat = $request->get('alamat');
+        $telepon = $request->get('telepon');
+
+        DB::table('karyawans')->where('kode_karyawan', $id)->update([
+            'nama_karyawan' => $nama,
+            'id_kelurahan' => $id_kelurahan,
+            'id_kecamatan' => $id_kecamatan,
+            'alamat' => $alamat,
+            'telepon' => $telepon
+        ]);
+
+        return redirect('/admin/karyawan')->with(['msg' => 'Data Berhasil Update']);
     }
 
     /**
@@ -144,7 +173,9 @@ class KaryawanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('karyawans')->where('kode_karyawan', $id)->delete();
+
+        return redirect('/admin/karyawan')->with(['msgDelete' => 'Data Berhasil Dihapus']);
     }
 
     public function kelurahanCek(Request $request)

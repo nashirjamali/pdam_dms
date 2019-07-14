@@ -20,6 +20,14 @@
 <!-- ============================================================== -->
 <!-- end pageheader -->
 <!-- ============================================================== -->
+@if(Session::has('msg'))
+<p class="alert alert-success">{{ Session::get('msg') }}</p>
+@endif
+
+@if(Session::has('msgDelete'))
+<p class="alert alert-danger">{{ Session::get('msgDelete') }}</p>
+@endif
+
 <div class="row">
     <!-- ============================================================== -->
     <!-- Tabel Karyawan -->
@@ -39,6 +47,7 @@
                                 <th>Alamat</th>
                                 <th>Kelurahan</th>
                                 <th>Kecamatan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,6 +58,16 @@
                                 <td>{{ $key->alamat }}</td>
                                 <td>{{ $key->nama_kelurahan }}</td>
                                 <td>{{ $key->nama_kecamatan }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{ route('admin.karyawan.edit', $key->kode_karyawan) }}" class="btn btn-warning mr-2"><i class="fa fa-edit"></i></a>
+                                        <form action="{{route('admin.karyawan.destroy',[$key->kode_karyawan])}}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -76,6 +95,7 @@
                                 <th scope="col">Kode</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +104,16 @@
                                 <td>{{ $key->kode_karyawan }}</td>
                                 <td>{{ $key->nama_karyawan }}</td>
                                 <td>{{ $key->alamat }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="{{ route('admin.karyawan.edit', $key->kode_karyawan) }}" class="btn btn-warning mr-2"><i class="fa fa-edit"></i></a>
+                                        <form action="{{route('admin.karyawan.destroy',[$key->kode_karyawan])}}" method="POST">
+                                            <input type="hidden" name="_method" value="Delete">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
